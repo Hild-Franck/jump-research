@@ -16,7 +16,7 @@ const switchControl = {
 
 const setPosition = (player, direction) => {
     const newSpeed = player.speed + player.inertia * direction
-    player.speed = newSpeed * direction > player.maxSpeed * direction
+    player.speed = Math.abs(newSpeed) > Math.abs(player.maxSpeed)
         ? player.maxSpeed * direction
         : newSpeed
     return player.x + player.speed
