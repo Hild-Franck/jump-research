@@ -2,8 +2,10 @@
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
 
+// Useless utils function (yeah, kind of paradoxal)
 const getSign = value => value >= 0 ? 1 : -1
 
+// Values to change if you want to change jump feedback
 const testValue = {
     maxSpeed: 7,
     inertia: 0.2,
@@ -12,11 +14,13 @@ const testValue = {
     gravity: 0.3
 }
 
+// Key switch
 const switchControl = {
     right: false,
     left: false
 }
 
+// Create player speed control functions
 const setPosition = (player, direction) => {
     const newSpeed = player.speed + player.inertia * direction
     player.speed = Math.abs(newSpeed) > Math.abs(player.maxSpeed)
@@ -41,6 +45,7 @@ const jump = player => {
     }
 }
 
+// Create player object
 const player = {
     x: 10,
     y: 490,

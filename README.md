@@ -9,3 +9,7 @@ The maximum velocity the player can reach (in pixel per tick)
 The acceleration the player get until he reaches the maxSpeed (in pixel per tick per tick)
 ## floorAdhesion
 The deceleration the player get until he reaches 0 (in pixel per tick per tick)
+## jumpForce
+The initial vertical speed when starting a jump
+## gravity
+The deceleration the player get vertically while jumping
