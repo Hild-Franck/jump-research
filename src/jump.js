@@ -6,7 +6,8 @@ const getSign = value => value >= 0 ? 1 : -1
 
 const testValue = {
     maxSpeed: 7,
-    inertia: 0.3
+    inertia: 0.2,
+    floorAdhesion: 0.1
 }
 
 const switchControl = {
@@ -22,6 +23,15 @@ const setPosition = (player, direction) => {
     return player.x + player.speed
 }
 
+const brake = player => {
+    const sign = Math.sign(player.speed)
+    const newSpeed = player.speed - player.floorAdhesion * sign
+    player.speed = sign !== Math.sign(newSpeed)
+        ? 0
+        : newSpeed
+    return player.x + player.speed
+}
+
 const player = {
     x: 10,
     y: 490,
@@ -33,6 +43,7 @@ const player = {
     speed: 0,
     maxSpeed: testValue.maxSpeed,
     inertia: testValue.inertia,
+    floorAdhesion: testValue.floorAdhesion,
     update: () => {
         if (switchControl.right) {
             return (player.x = setPosition(player, 1))
@@ -40,7 +51,7 @@ const player = {
         if (switchControl.left) {
             return (player.x = setPosition(player, -1))
         }
-        player.speed = 0
+        player.x = brake(player)
     },
     draw: () => {
         const width = player.width
