@@ -7,7 +7,9 @@ const getSign = value => value >= 0 ? 1 : -1
 const testValue = {
     maxSpeed: 7,
     inertia: 0.2,
-    floorAdhesion: 0.1
+    floorAdhesion: 0.1,
+    jumpForce: 7,
+    gravity: 0.3
 }
 
 const switchControl = {
@@ -32,6 +34,13 @@ const brake = player => {
     return player.x + player.speed
 }
 
+const jump = player => {
+    if (!player.jumping) {
+        player.jumping = true
+        player.verticalSpeed = -player.jumpForce
+    }
+}
+
 const player = {
     x: 10,
     y: 490,
@@ -41,9 +50,11 @@ const player = {
     height: 20,
     jumping: false,
     speed: 0,
+    verticalSpeed: 0,
     maxSpeed: testValue.maxSpeed,
     inertia: testValue.inertia,
     floorAdhesion: testValue.floorAdhesion,
+    jumpForce: testValue.jumpForce,
     update: () => {
         if (switchControl.right) {
             return (player.x = setPosition(player, 1))
@@ -52,6 +63,11 @@ const player = {
             return (player.x = setPosition(player, -1))
         }
         player.x = brake(player)
+        if (player.jumping) {
+            player.y += player.verticalSpeed
+            player.verticalSpeed += testValue.gravity
+            console.log(player.verticalSpeed)
+        }
     },
     draw: () => {
         const width = player.width
@@ -77,6 +93,10 @@ const onKeyUp = e => handleKey(e, false)
 
 document.addEventListener('keydown', onKeyDown)
 document.addEventListener('keyup', onKeyUp)
+document.addEventListener('keypress', e => {
+    if (e.keyCode === 32)
+        jump(player)
+})
 
 // Set basic (= crappy) game loop
 setInterval(() => {
