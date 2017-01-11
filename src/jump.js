@@ -56,6 +56,10 @@ const player = {
     floorAdhesion: testValue.floorAdhesion,
     jumpForce: testValue.jumpForce,
     update: () => {
+        if (player.jumping) {
+            player.y += player.verticalSpeed
+            player.verticalSpeed += testValue.gravity
+        }
         if (switchControl.right) {
             return (player.x = setPosition(player, 1))
         }
@@ -63,11 +67,6 @@ const player = {
             return (player.x = setPosition(player, -1))
         }
         player.x = brake(player)
-        if (player.jumping) {
-            player.y += player.verticalSpeed
-            player.verticalSpeed += testValue.gravity
-            console.log(player.verticalSpeed)
-        }
     },
     draw: () => {
         const width = player.width
