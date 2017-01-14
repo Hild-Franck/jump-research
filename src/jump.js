@@ -128,3 +128,6 @@ setInterval(() => {
     player.update()
     player.draw()
 }, 16)
+
+// Make canvas boundaries visible
+canvas.style.border = "solid black 1px"
