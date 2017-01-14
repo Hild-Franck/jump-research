@@ -8,10 +8,12 @@ const getSign = value => value >= 0 ? 1 : -1
 // Values to change if you want to change jump feedback
 const testValue = {
     maxSpeed: 7,
-    inertia: 0.7,
-    floorAdhesion: 0.1,
+    inertia: 5,
+    floorAdhesion: 0.9,
     jumpForce: 7,
-    gravity: 0.4
+    gravity: 0.4,
+    airResistance: 0.1,
+    airControl: 0.08
 }
 
 // Key switch
@@ -20,9 +22,16 @@ const switchControl = {
     left: false
 }
 
+const getBrakeSpeedDown = player => player.jumping
+    ? player.airResistance
+    : player.floorAdhesion
+
+const getAcceleration = (player, direction) => 
+    player.inertia * direction * (player.jumping ? player.airControl : 1)
+
 // Create player speed control functions
 const setPosition = (player, direction) => {
-    const newSpeed = player.speed + player.inertia * direction
+    const newSpeed = player.speed + getAcceleration(player, direction)
     player.speed = Math.abs(newSpeed) > Math.abs(player.maxSpeed)
         ? player.maxSpeed * direction
         : newSpeed
@@ -35,7 +44,7 @@ const setPosition = (player, direction) => {
 
 const brake = player => {
     const sign = Math.sign(player.speed)
-    const newSpeed = player.speed - player.floorAdhesion * sign
+    const newSpeed = player.speed - getBrakeSpeedDown(player) * sign
     player.speed = sign !== Math.sign(newSpeed)
         ? 0
         : newSpeed
@@ -68,6 +77,8 @@ const player = {
     inertia: testValue.inertia,
     floorAdhesion: testValue.floorAdhesion,
     jumpForce: testValue.jumpForce,
+    airResistance: testValue.airResistance,
+    airControl: testValue.airControl,
     update: () => {
         if (player.jumping) {
             const newPosition = player.y + player.verticalSpeed
