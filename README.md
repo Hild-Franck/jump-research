@@ -8,8 +8,12 @@ The maximum velocity the player can reach (in pixel per tick)
 ## inertia
 The acceleration the player get until he reaches the maxSpeed (in pixel per tick per tick)
 ## floorAdhesion
-The deceleration the player get until he reaches 0 (in pixel per tick per tick)
+The deceleration the player get until he reaches 0 while touching the floor (in pixel per tick per tick)
 ## jumpForce
 The initial vertical speed when starting a jump
 ## gravity
 The deceleration the player get vertically while jumping
+## airResistance
+The deceleration the player get until he reaches 0 while jumping (in pixel per tick per tick)
+## airControl
+The modifier of inertia while jumping
