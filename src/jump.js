@@ -119,7 +119,7 @@ const onKeyUp = e => handleKey(e, false)
 document.addEventListener('keydown', onKeyDown)
 document.addEventListener('keyup', onKeyUp)
 document.addEventListener('keypress', e => {
-    if (e.keyCode === 32)
+    if (e.charCode === 32)
         jump(player)
 })
 
