@@ -13,7 +13,8 @@ const testValue = {
     jumpForce: 7,
     gravity: 0.4,
     airResistance: 0.1,
-    airControl: 0.08
+    airControl: 0.08,
+    jumpPressedMod: 0.35
 }
 
 // Key switch
@@ -21,6 +22,8 @@ const switchControl = {
     right: false,
     left: false
 }
+
+let pressed
 
 const getBrakeSpeedDown = player => player.jumping
     ? player.airResistance
@@ -57,6 +60,7 @@ const brake = player => {
 
 const jump = player => {
     if (!player.jumping) {
+        pressed = true
         player.jumping = true
         player.verticalSpeed = -player.jumpForce
     }
@@ -84,7 +88,7 @@ const player = {
             const newPosition = player.y + player.verticalSpeed
             player.y = newPosition > 490 ? 490 : newPosition
             player.jumping = !(player.y === 490)
-            player.verticalSpeed += testValue.gravity
+            player.verticalSpeed += (testValue.gravity - (pressed ? testValue.gravity * testValue.jumpPressedMod : 0))
         }
         if (switchControl.right) {
             return (player.x = setPosition(player, 1))
@@ -114,14 +118,22 @@ const handleKey = (e, bool) => {
 }
 
 const onKeyDown = e => handleKey(e, true)
-const onKeyUp = e => handleKey(e, false)
+const onKeyUp = e => handleKey(e, false);
+
+const onJumpDown = e => {
+    if (e.keyCode === 32) {
+        jump(player)
+    }
+}
+const onJumpUp = e => {
+    if (e.keyCode === 32)
+        pressed = false
+}
+document.addEventListener('keydown', onJumpDown)
+document.addEventListener('keyup', onJumpUp)
 
 document.addEventListener('keydown', onKeyDown)
 document.addEventListener('keyup', onKeyUp)
-document.addEventListener('keypress', e => {
-    if (e.charCode === 32)
-        jump(player)
-})
 
 // Set basic (= crappy) game loop
 setInterval(() => {
